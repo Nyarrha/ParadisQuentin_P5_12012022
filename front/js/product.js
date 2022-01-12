@@ -2,18 +2,17 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
-console.log(id);
+
 // Appel API du produit sélectionné
 fetch(`http://localhost:3000/api/products/${id}`)
 // Promesse pour changer la réponse en JSON
 .then((response) => response.json())
 // Promesse pour traiter les données reçues
 .then((res) => recupData(res))
-.catch((reject) => console.log(reject))
+.catch((reject) => reject)
 
 // Fonction regroupant les différentes données du produits et les fonctions pour les afficher
 function recupData(kanap){
-    console.log({ kanap });
     const {altTxt, colors, description, imageUrl, name, price} = kanap;
     createImage(imageUrl, altTxt)
     createTitle(name)
