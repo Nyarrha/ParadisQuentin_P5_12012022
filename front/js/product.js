@@ -2,10 +2,8 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
-if (id != null) {
-    let kanapPrice = 0
-    let imgUrl, altText, productName
-}
+let kanapPrice = 0
+let imgUrl, altText, productName
 
 // Appel API du produit sélectionné
 fetch(`http://localhost:3000/api/products/${id}`)
@@ -77,25 +75,28 @@ const button = document.querySelector('#addToCart')
 if (button != null) {
     // Création EventListener du clic sur le bouton et variables pour stocker les choix utilisateur
 button.addEventListener('click', (e) => {
-    const colorChoice = document.querySelector('#colors').value
-    const quantityChoice = document.querySelector('#quantity').value
+    const colorChoice = document.querySelector('#colors').value;
+    const quantityChoice = parseInt(document.querySelector('#quantity').value);
     console.log(colorChoice, quantityChoice)
     // Traitement des différents cas d'erreur(s'il n'y a pas de couleur ou de quantité choisie, par exemple)
-    if (colorChoice == null || colorChoice === '' || quantityChoice == null || quantityChoice == 0) {
-    alert('Veuillez choisir une couleur et une quantité')
+    if (colorChoice == null || colorChoice === '' || quantityChoice == null || quantityChoice < 1) {
+    alert('Veuillez choisir une couleur et une quantité');
     return
     }
+
+    let cart = JSONparse(window.localStorage.getItem('cart')) ?? [];
+    // let productFound = cart.find(item => id == 0)
 
     // Création objet à stocker dans le localStorage
     const data = {
         id : id,
         color : colorChoice,
-        quantity : Number(quantityChoice),
+        quantity : quantityChoice,
         imageUrl : imgUrl,
         altTxt : altText
     }
     // Conversion de l'objet en JSON, stockage dans le localStorage puis redirection vers la page panier
     localStorage.setItem(id, JSON.stringify(data))
-    window.location.href = 'cart.html'  
+    // window.location.href = 'cart.html'  
 })
 }
