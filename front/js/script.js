@@ -54,9 +54,10 @@ function getKanap(kanap) {
 // Appel API
 fetch(url)
     // Promesse pour transformer le résultat en .JSON
-    .then((response) => {
-        // Fonction pour afficher produit sur le DOM
-        let kanaps = response.json();
+   .then((response) => response.json())
+//    Affichage des produits sur le DOM
+   .then((kanaps) =>{
+    console.log(kanaps);
         for (const kanap of kanaps) {
             kanapsList.appendChild(getKanap(kanap));
         }
