@@ -57,7 +57,6 @@ fetch(url)
    .then((response) => response.json())
 //    Affichage des produits sur le DOM
    .then((kanaps) =>{
-    console.log(kanaps);
         for (const kanap of kanaps) {
             kanapsList.appendChild(getKanap(kanap));
         }

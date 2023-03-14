@@ -50,9 +50,9 @@ function createPrice(price){
 
 // Fonction pour afficher la description du produit sur le DOM
 function createDescription(description){
-const descriptif = document.querySelector('#description')
-if (descriptif != null) descriptif.innerText = description
-}
+    const descriptif = document.querySelector('#description')
+    if (descriptif != null) descriptif.innerText = description
+    }
 
 // Fonction pour afficher les différents choix de couleurs du produit sur le DOM
 function createColors(colors){
@@ -79,24 +79,29 @@ button.addEventListener('click', (e) => {
     const quantityChoice = parseInt(document.querySelector('#quantity').value);
     console.log(colorChoice, quantityChoice)
     // Traitement des différents cas d'erreur(s'il n'y a pas de couleur ou de quantité choisie, par exemple)
-    if (colorChoice == null || colorChoice === '' || quantityChoice == null || quantityChoice < 1) {
+    if (!colorChoice || quantityChoice < 1 || quantityChoice > 100) {
     alert('Veuillez choisir une couleur et une quantité');
     return
+    } else {
+        // Création objet à stocker dans le localStorage
+        const data = {
+        'id' : id,
+        'color' : colorChoice,
+        'quantity' : quantityChoice,
+        'imageUrl' : imgUrl,
+        'altTxt' : altText
     }
-
-    let cart = JSONparse(window.localStorage.getItem('cart')) ?? [];
-    // let productFound = cart.find(item => id == 0)
-
-    // Création objet à stocker dans le localStorage
-    const data = {
-        id : id,
-        color : colorChoice,
-        quantity : quantityChoice,
-        imageUrl : imgUrl,
-        altTxt : altText
+        // Appel d'un tableau contenant les objets à stocker(ou création d'un tableau vide s'il n'y en a pas déjà un)
+        let cart = JSON.parse(window.localStorage.getItem('cart')) ?? [];
+        // Recherche id et couleurs identiques existant dans tableau d'objets, puis ajout objet s'il n'existe pas, ou addition quantités s'il existe déjà
+        let productFound = cart.find(item => id == item.id && colorChoice == item.color);
+        if (productFound == undefined){
+            cart.push(data);
+        } else {
+            productFound.quantity += quantityChoice;
+        }
+        // Stockage du tableau dans le localStorage
+        window.localStorage.setItem('cart', JSON.stringify(cart));
     }
-    // Conversion de l'objet en JSON, stockage dans le localStorage puis redirection vers la page panier
-    localStorage.setItem(id, JSON.stringify(data))
-    // window.location.href = 'cart.html'  
 })
 }
