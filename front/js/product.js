@@ -10,11 +10,11 @@ fetch(`http://localhost:3000/api/products/${id}`)
 // Promesse pour changer la réponse en JSON
 .then((response) => response.json())
 // Promesse pour traiter les données reçues
-.then((res) => recupData(res))
+.then((res) => retrieveData(res))
 .catch((reject) => reject)
 
 // Fonction regroupant les différentes données du produits et les fonctions pour les afficher
-function recupData(kanap){
+function retrieveData(kanap){
     const {altTxt, colors, description, imageUrl, name, price} = kanap;
     kanapPrice = price
     imgUrl = imageUrl
@@ -77,7 +77,6 @@ if (button != null) {
 button.addEventListener('click', (e) => {
     const colorChoice = document.querySelector('#colors').value;
     const quantityChoice = parseInt(document.querySelector('#quantity').value);
-    console.log(colorChoice, quantityChoice)
     // Traitement des différents cas d'erreur(s'il n'y a pas de couleur ou de quantité choisie, par exemple)
     if (!colorChoice || quantityChoice < 1 || quantityChoice > 100) {
     alert('Veuillez choisir une couleur et une quantité');
@@ -86,11 +85,12 @@ button.addEventListener('click', (e) => {
         // Création objet à stocker dans le localStorage
         const data = {
         'id' : id,
+        'name' : productName,
         'color' : colorChoice,
         'quantity' : quantityChoice,
         'imageUrl' : imgUrl,
         'altTxt' : altText
-    }
+        }
         // Appel d'un tableau contenant les objets à stocker(ou création d'un tableau vide s'il n'y en a pas déjà un)
         let cart = JSON.parse(window.localStorage.getItem('cart')) ?? [];
         // Recherche id et couleurs identiques existant dans tableau d'objets, puis ajout objet s'il n'existe pas, ou addition quantités s'il existe déjà
