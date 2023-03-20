@@ -3,21 +3,51 @@ let cart = JSON.parse(window.localStorage.getItem('cart')) ?? [];
 let res = await fetch(url);
 let products = await res.json();
 
+//Création nouvelle liste API à partir du localstorage
+// let productsIdMapping = products.map(product => product._id)
+
+// for (let i = productsIdMapping.length -1; i >= 0; i--){
+//     if (productsIdMapping[i].value != cart.id) {
+//         productsIdMapping.splice(i, 1);
+//     }
+// }
+// console.log(productsIdMapping);
+
 function createCartItem() {
     let section = document.querySelector('#cart__items')
     // Appel fonctions pour créer l'item panier
     let article = createArticle();
     let image = createImage();
     let itemsContent = createItemsContent();
-    // -------- Pas fini --------- //
+    let itemContent = createItemContent();
+    let contentSettings = createContentSettings();
+    let contentSettingsQuantity = createSettingsQuantity();
+    let contentSettingsDelete = settingsDelete();
+
+    
+    article.appendChild(image);
+    article.appendChild(itemsContent);
+    article.appendChild(itemContent);
+    article.appendChild(contentSettings);
+    article.appendChild(contentSettingsQuantity);
+    article.appendChild(contentSettingsDelete);
+
+    section.appendChild(article);
+
+    return section;
 }
+
+for (let i = 0; i < cart.length; i++){
+    createCartItem();
+}
+    // -------- Pas fini --------- //
 
 // Création de la balise article
 function createArticle() {
     let article = document.createElement('article');
     article.classList.add('cart__item');
-    article.dataset.id(cart.id);
-    article.dataset.color(cart.color);
+    article.dataset.id = cart.id;
+    article.dataset.color = cart.color;
     return article;
 }
 
@@ -38,7 +68,7 @@ function createImage() {
 function createItemsContent() {
     let divContent = document.createElement('div');
     divContent.classList.add('cart__item__content');
-    // Regroupement des div dans la plus grande
+    // Regroupement des petites div dans la plus grande
     let content = createContent();
     let contentSettings = createContentSettings();
     let deleteSettings = deleteContentSettings();
@@ -49,6 +79,8 @@ function createItemsContent() {
 
     return divContent;
 }
+
+// 
 
 // Création de la div description du produit
 function createItemContent() {
@@ -124,7 +156,5 @@ function settingsDelete() {
 // Fonction pour calculer la quantité totale d'articles du panier
 function totalQuantity(){
     let totalQuantity = document.querySelector('#totalQuantity'); 
-    const mapQuantities = cart.map(quantities => quantities.quantity);
-    console.log(mapPrices);
-    totalQuantity.textContent += parseInt(mapQuantities.value);
+    
 }
